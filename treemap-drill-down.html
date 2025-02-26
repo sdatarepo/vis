@@ -1,0 +1,130 @@
+<!--
+	THIS EXAMPLE WAS DOWNLOADED FROM https://echarts.apache.org/examples/en/editor.html?c=treemap-drill-down
+-->
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+  <script type="text/javascript" src="https://echarts.apache.org/en/js/vendors/jquery@3.7.1/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  
+  <!-- Uncomment this line if you want to dataTool extension
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/extension/dataTool.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use gl extension
+  <script type="text/javascript" src="https://echarts.apache.org/en/js/vendors/echarts-gl@2/dist/echarts-gl.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-stat extension
+  <script type="text/javascript" src="https://echarts.apache.org/en/js/vendors/echarts-stat@latest/dist/ecStat.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to echarts-graph-modularity extension
+  <script type="text/javascript" src="https://echarts.apache.org/en/js/vendors/echarts-graph-modularity/dist/echarts-graph-modularity.min.js"></script>
+  -->
+  <!-- Uncomment this line if you want to use map
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+  -->
+  <!-- Uncomment these two lines if you want to use bmap extension
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=YOUR_API_KEY"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/extension/bmap.min.js"></script>
+  -->
+
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+    var ROOT_PATH = 'https://echarts.apache.org/examples';
+    var option;
+
+    const uploadedDataURL =
+  ROOT_PATH + '/data/asset/data/ec-option-doc-statistics-201604.json';
+myChart.showLoading();
+$.getJSON(uploadedDataURL, function (rawData) {
+  myChart.hideLoading();
+  function convert(source, target, basePath) {
+    for (let key in source) {
+      let path = basePath ? basePath + '.' + key : key;
+      if (!key.match(/^\$/)) {
+        target.children = target.children || [];
+        const child = {
+          name: path
+        };
+        target.children.push(child);
+        convert(source[key], child, path);
+      }
+    }
+    if (!target.children) {
+      target.value = source.$count || 1;
+    } else {
+      target.children.push({
+        name: basePath,
+        value: source.$count
+      });
+    }
+  }
+  const data = {
+    children: []
+  };
+  convert(rawData, data, '');
+  myChart.setOption(
+    (option = {
+      title: {
+        text: 'ECharts Options',
+        subtext: '2016/04',
+        left: 'leafDepth'
+      },
+      tooltip: {},
+      series: [
+        {
+          name: 'option',
+          type: 'treemap',
+          visibleMin: 300,
+          data: data.children,
+          leafDepth: 2,
+          levels: [
+            {
+              itemStyle: {
+                borderColor: '#555',
+                borderWidth: 4,
+                gapWidth: 4
+              }
+            },
+            {
+              colorSaturation: [0.3, 0.6],
+              itemStyle: {
+                borderColorSaturation: 0.7,
+                gapWidth: 2,
+                borderWidth: 2
+              }
+            },
+            {
+              colorSaturation: [0.3, 0.5],
+              itemStyle: {
+                borderColorSaturation: 0.6,
+                gapWidth: 1
+              }
+            },
+            {
+              colorSaturation: [0.3, 0.5]
+            }
+          ]
+        }
+      ]
+    })
+  );
+});
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+</html>
