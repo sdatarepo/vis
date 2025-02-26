@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+  <title>Imports Treemap</title>
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+
+  <script type="text/javascript">
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+
+    myChart.showLoading();
+
+    // Fake hierarchical data for imports
+    const fakeData = [
+      {
+        name: "Electronics",
+        children: [
+          {
+            name: "Computers",
+            children: [
+              { name: "Laptops", value: 500 },
+              { name: "Desktops", value: 300 },
+              { name: "Tablets", value: 200 },
+              { name: "Servers", value: 100 },
+              { name: "Accessories", value: 150 },
+              { name: "Monitors", value: 250 }
+            ]
+          },
+          {
+            name: "Phones",
+            children: [
+              { name: "Smartphones", value: 800 },
+              { name: "Feature Phones", value: 100 },
+              { name: "Accessories", value: 150 },
+              { name: "Batteries", value: 200 },
+              { name: "Chargers", value: 250 },
+              { name: "Headphones", value: 400 }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Automotive",
+        children: [
+          {
+            name: "Cars",
+            children: [
+              { name: "Sedans", value: 500 },
+              { name: "SUVs", value: 600 },
+              { name: "Trucks", value: 300 },
+              { name: "Electric", value: 200 },
+              { name: "Hybrid", value: 150 },
+              { name: "Luxury", value: 400 }
+            ]
+          },
+          {
+            name: "Motorcycles",
+            children: [
+              { name: "Sport", value: 200 },
+              { name: "Cruisers", value: 300 },
+              { name: "Scooters", value: 100 },
+              { name: "Electric", value: 80 },
+              { name: "Touring", value: 150 },
+              { name: "Dirt Bikes", value: 120 }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Clothing",
+        children: [
+          {
+            name: "Men",
+            children: [
+              { name: "Shirts", value: 400 },
+              { name: "Pants", value: 350 },
+              { name: "Jackets", value: 200 },
+              { name: "Shoes", value: 300 },
+              { name: "Hats", value: 150 },
+              { name: "Accessories", value: 250 }
+            ]
+          },
+          {
+            name: "Women",
+            children: [
+              { name: "Dresses", value: 500 },
+              { name: "Tops", value: 400 },
+              { name: "Skirts", value: 200 },
+              { name: "Shoes", value: 350 },
+              { name: "Bags", value: 250 },
+              { name: "Jewelry", value: 300 }
+            ]
+          }
+        ]
+      },
+      {
+        name: "Food & Beverages",
+        children: [
+          {
+            name: "Dairy",
+            children: [
+              { name: "Milk", value: 400 },
+              { name: "Cheese", value: 350 },
+              { name: "Yogurt", value: 200 },
+              { name: "Butter", value: 150 },
+              { name: "Cream", value: 120 },
+              { name: "Ice Cream", value: 180 }
+            ]
+          },
+          {
+            name: "Beverages",
+            children: [
+              { name: "Juice", value: 500 },
+              { name: "Soda", value: 600 },
+              { name: "Water", value: 300 },
+              { name: "Coffee", value: 200 },
+              { name: "Tea", value: 150 },
+              { name: "Alcohol", value: 400 }
+            ]
+          }
+        ]
+      }
+    ];
+
+    myChart.hideLoading();
+
+    // Set ECharts treemap option with fake data
+    var option = {
+      title: {
+        text: 'Import Categories',
+        subtext: 'Fake Data Example',
+        left: 'leafDepth'
+      },
+      tooltip: {},
+      series: [
+        {
+          name: 'Imports',
+          type: 'treemap',
+          visibleMin: 300,
+          data: fakeData,
+          leafDepth: 2,
+          levels: [
+            {
+              itemStyle: {
+                borderColor: '#555',
+                borderWidth: 4,
+                gapWidth: 4
+              }
+            },
+            {
+              colorSaturation: [0.3, 0.6],
+              itemStyle: {
+                borderColorSaturation: 0.7,
+                gapWidth: 2,
+                borderWidth: 2
+              }
+            },
+            {
+              colorSaturation: [0.3, 0.5],
+              itemStyle: {
+                borderColorSaturation: 0.6,
+                gapWidth: 1
+              }
+            },
+            {
+              colorSaturation: [0.3, 0.5]
+            }
+          ]
+        }
+      ]
+    };
+
+    myChart.setOption(option);
+
+    window.addEventListener('resize', myChart.resize);
+  </script>
+</body>
+</html>
