@@ -42,8 +42,7 @@
     var ROOT_PATH = 'https://echarts.apache.org/examples';
     var option;
 
-    const uploadedDataURL =
-  ROOT_PATH + '/data/asset/data/ec-option-doc-statistics-201604.json';
+    const uploadedDataURL ='ec-option-doc-statistics-201604.json';
 myChart.showLoading();
 $.getJSON(uploadedDataURL, function (rawData) {
   myChart.hideLoading();
